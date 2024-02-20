@@ -1,10 +1,30 @@
 import { Header } from "../../components/Header/Header";
+import Style from "../AboutUsPage/aboutUsPage.module.css";
 
 export const AboutUsPage = () => {
   return (
     <>
       <Header />
-      <div>aboutUs</div>
+      <div className={Style.wrapper}>
+        <h2>О нас</h2>
+        <p className={Style.text}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
+          dolor perferendis id, possimus nesciunt libero quibusdam blanditiis
+          architecto explicabo accusamus corporis fugit aut ut quo voluptatibus
+          velit reprehenderit, repudiandae veniam. Alias error, repudiandae iste
+          nobis distinctio et atque voluptates unde, provident vero dolorem
+          maiores architecto impedit! Hic vitae mollitia maxime?
+        </p>
+        <p className={Style.text}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
+          dolor perferendis id, possimus nesciunt libero quibusdam blanditiis
+          architecto explicabo accusamus corporis fugit aut ut quo voluptatibus
+          velit reprehenderit, repudiandae veniam. Alias error, repudiandae iste
+          nobis distinctio et atque voluptates unde, provident vero dolorem
+          maiores architecto impedit! Hic vitae mollitia maxime?
+        </p>
+        <img src="https://placehold.co/500" className={Style.image}></img>
+      </div>
     </>
   );
 };

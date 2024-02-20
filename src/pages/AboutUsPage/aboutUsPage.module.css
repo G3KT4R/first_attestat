@@ -1,0 +1,14 @@
+.wrapper {
+  padding: 10px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.text {
+  border: 1px solid black;
+}
+
+.image {
+  width: 500px;
+  height: 500px;
+}
