@@ -1,23 +1,25 @@
 import { Link } from "react-router-dom";
 import Styles from "./header.module.css";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 export const Header = () => {
   return (
     <>
       <div className={Styles.wrapper}>
-        <h2>Aboba</h2>
-        <Button className={Styles.item} type="primary">
-          <Link to="/login">Авторизация</Link>
-        </Button>
-        <Button className={Styles.item} type="primary">
-          <Link to="/registration">Регистрация</Link>
-        </Button>
-        <Button className={Styles.item} type="primary">
-          <Link to="/about-us">О нас</Link>
-        </Button>
-        <Button className={Styles.item} type="primary">
-          <Link to="/weather">Погода</Link>
-        </Button>
+        <Typography.Title level={1}>Aboba</Typography.Title>
+        <div>
+          <Link className={Styles.item} to="/login">
+            <Button type="primary">Авторизация</Button>
+          </Link>
+          <Link className={Styles.item} to="/registration">
+            <Button type="primary">Регистрация</Button>
+          </Link>
+          <Link className={Styles.item} to="/about-us">
+            <Button type="primary">О нас</Button>
+          </Link>
+          <Link className={Styles.item} to="/weather">
+            <Button type="primary">Погода</Button>
+          </Link>
+        </div>
       </div>
     </>
   );

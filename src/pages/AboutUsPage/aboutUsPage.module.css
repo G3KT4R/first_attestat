@@ -2,13 +2,9 @@
   padding: 10px;
   border: 1px solid black;
   text-align: center;
-}
-
-.text {
-  border: 1px solid black;
+  margin-top: 10px;
 }
 
 .image {
-  width: 500px;
-  height: 500px;
+  text-align: center;
 }

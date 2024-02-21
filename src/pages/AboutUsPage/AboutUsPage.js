@@ -1,3 +1,4 @@
+import { Image } from "antd";
 import { Header } from "../../components/Header/Header";
 import Style from "../AboutUsPage/aboutUsPage.module.css";
 
@@ -7,7 +8,7 @@ export const AboutUsPage = () => {
       <Header />
       <div className={Style.wrapper}>
         <h2>О нас</h2>
-        <p className={Style.text}>
+        <p>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
           dolor perferendis id, possimus nesciunt libero quibusdam blanditiis
           architecto explicabo accusamus corporis fugit aut ut quo voluptatibus
@@ -15,7 +16,7 @@ export const AboutUsPage = () => {
           nobis distinctio et atque voluptates unde, provident vero dolorem
           maiores architecto impedit! Hic vitae mollitia maxime?
         </p>
-        <p className={Style.text}>
+        <p>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
           dolor perferendis id, possimus nesciunt libero quibusdam blanditiis
           architecto explicabo accusamus corporis fugit aut ut quo voluptatibus
@@ -23,7 +24,9 @@ export const AboutUsPage = () => {
           nobis distinctio et atque voluptates unde, provident vero dolorem
           maiores architecto impedit! Hic vitae mollitia maxime?
         </p>
-        <img src="https://placehold.co/500" className={Style.image}></img>
+        <div className={Style.image}>
+          <Image src="./1.png" width={500} />
+        </div>
       </div>
     </>
   );
