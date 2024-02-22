@@ -121,8 +121,8 @@ export const WeatherPage = () => {
       {cityInfo && (
         <div className={Styles.out}>
           <div>Название города: {cityInfo.location.name}</div>
-          <div>Местное время: {cityInfo.location.localtime}</div>
-          <div>Температуа, С: {cityInfo.current.temp_c}</div>
+          <div>Дата и время: {cityInfo.location.localtime}</div>
+          <div>Температура, С: {cityInfo.current.temp_c}</div>
           <div>Скорость ветра, км/ч: {cityInfo.current.gust_kph}</div>
         </div>
       )}
