@@ -2,9 +2,36 @@ import { Header } from "../../components/Header/Header";
 import Styles from "../RegistrationPage/registrationPage.module.css";
 import { Link } from "react-router-dom";
 import { Input, Button, Form, Typography } from "antd";
+import { useState } from "react";
 
 export const RegistrationPage = () => {
   const [form] = Form.useForm();
+  const [message, setMessage] = useState("");
+  const [isResultSuccess, setIsResultSuccess] = useState();
+  const onFinish = (values) => {
+    fetch(`http://localhost:9500/registration`, {
+      method: "POST",
+      body: JSON.stringify({ values }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .then(function (data) {
+        setMessage(data.message);
+        setIsResultSuccess(data.success);
+      })
+      .catch(function (error) {
+        console.warn("Something went wrong.", error);
+      });
+  };
+
+  const messageClass = isResultSuccess ? Styles.success : Styles.error;
 
   const tailFormItemLayout = {
     wrapperCol: {
@@ -40,8 +67,19 @@ export const RegistrationPage = () => {
   return (
     <>
       <Header />
-
-      <Form form={form} {...formItemLayout} className={Styles.wrapper}>
+      <div className={`${messageClass} ${Styles.message}`}>{message}</div>
+      <Form
+        className={Styles.wrapper}
+        {...formItemLayout}
+        form={form}
+        name="register"
+        onFinish={onFinish}
+        style={{
+          maxWidth: 500,
+          width: "100%",
+        }}
+        scrollToFirstError
+      >
         <Typography.Title level={3} className={Styles.center}>
           Регистрация
         </Typography.Title>
@@ -163,11 +201,11 @@ export const RegistrationPage = () => {
               У Вас уже есть аккаунт? <Link to="/login">Войти</Link>
             </Typography.Title>
           </form> */}
-        <form className={Styles.center}>
+        <div className={Styles.center}>
           <Typography.Title level={5}>
-            У Вас уже есть аккаунт? <Link to="/login">Войти</Link>
+            У Вас уже есть аккаунт? <Link to="/">Войти</Link>
           </Typography.Title>
-        </form>
+        </div>
       </Form>
     </>
   );

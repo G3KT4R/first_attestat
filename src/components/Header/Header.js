@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import Styles from "./header.module.css";
-import { Button, Typography } from "antd";
+import { Button, Typography, Image } from "antd";
 export const Header = () => {
   return (
     <>
       <div className={Styles.wrapper}>
         <Typography.Title level={1}>Aboba</Typography.Title>
         <div>
-          <Link className={Styles.item} to="/login">
+          <Link className={Styles.item} to="/">
             <Button type="primary">Авторизация</Button>
           </Link>
           <Link className={Styles.item} to="/registration">

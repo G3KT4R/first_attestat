@@ -6,10 +6,21 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
+  background: lightblue;
 }
 .button {
   margin-top: 15px;
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.out {
+  border: 5px solid blue;
+  padding: 10px;
+  width: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background: lightblue;
 }
