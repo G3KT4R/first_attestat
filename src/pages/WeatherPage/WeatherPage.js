@@ -1,7 +1,9 @@
 import { Typography, Input, Button, Form } from "antd";
 import { Header } from "../../components/Header/Header";
 import Styles from "../WeatherPage/weatherPage.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useGetWeatherQuery } from "../../store/weatherApi";
+import { usePostWeatherInfoMutation } from "../../store/postWeatherApi";
 
 const formItemLayout = {
   labelCol: {
@@ -34,41 +36,69 @@ const tailFormItemLayout = {
   },
 };
 
-// https://api.weatherapi.com/v1/current.json?key=e76d25837642475daed173913232212&q=Moscow&aqi=no
-
 export const WeatherPage = () => {
   const [form] = Form.useForm();
   const [city, setCity] = useState("initialState");
-  const [cityInfo, setCityInfo] = useState();
-  const [errorMessage, setErrorMessage] = useState("");
+  const { data = [], error, isLoading } = useGetWeatherQuery(city);
+  const [postWeatherInfo, { isError }] = usePostWeatherInfoMutation();
+  const [cityInfo, setCityInfo] = useState(null);
+  const [errorObj, setErrorObj] = useState("");
 
-  const onFinish = (values) => {
-    fetch(
-      ` https://api.weatherapi.com/v1/current.json?key=6513546f07374d0fb24113839240201&q=${city}&aqi=no`,
-      {
-        method: "POST",
-        body: JSON.stringify({ values }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    )
-      .then(function (response) {
-        if (response.ok) {
-          return response.json();
-        }
-        return Promise.reject(response);
-      })
-      .then(function (data) {
-        setCityInfo(data);
-        setErrorMessage("");
-      })
-      .catch(function (error) {
-        setErrorMessage("Города с таким наименованием не существует.");
-        setCityInfo();
-        console.warn("Something went wrong.", error);
-      });
+  useEffect(() => {
+    setErrorObj(error);
+    if (error) {
+      setCityInfo(null);
+    }
+    if (city === "") {
+      setErrorObj("");
+    }
+  }, [error, city]);
+
+  const onFinish = async () => {
+    setCityInfo(data);
+    if (cityInfo) {
+      await postWeatherInfo({
+        name: cityInfo?.location.name,
+        date: cityInfo?.location.localtime,
+        temperature: cityInfo?.current.temp_c,
+        speed: cityInfo?.current.wind_kph,
+      }).unwrap();
+    }
   };
+
+  const columns = [
+    {
+      title: "Название города",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Дата и время",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Температура",
+      dataIndex: "temperature",
+      key: "temperature",
+    },
+    {
+      title: "Скорость ветра",
+      dataIndex: "speed",
+      key: "speed",
+    },
+  ];
+
+  const dataSource = [
+    {
+      key: "1",
+      name: cityInfo?.location.name,
+      date: cityInfo?.location.localtime,
+      temperature: cityInfo?.current.temp_c,
+      speed: cityInfo?.current.wind_kph,
+    },
+  ];
+
   return (
     <>
       <Header />
@@ -123,7 +153,7 @@ export const WeatherPage = () => {
           <div>Название города: {cityInfo.location.name}</div>
           <div>Дата и время: {cityInfo.location.localtime}</div>
           <div>Температура, С: {cityInfo.current.temp_c}</div>
-          <div>Скорость ветра, км/ч: {cityInfo.current.gust_kph}</div>
+          <div>Скорость ветра, км/ч: {cityInfo.current.wind_kph}</div>
         </div>
       )}
     </>
