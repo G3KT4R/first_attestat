@@ -66,39 +66,6 @@ export const WeatherPage = () => {
     }
   };
 
-  const columns = [
-    {
-      title: "Название города",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Дата и время",
-      dataIndex: "date",
-      key: "date",
-    },
-    {
-      title: "Температура",
-      dataIndex: "temperature",
-      key: "temperature",
-    },
-    {
-      title: "Скорость ветра",
-      dataIndex: "speed",
-      key: "speed",
-    },
-  ];
-
-  const dataSource = [
-    {
-      key: "1",
-      name: cityInfo?.location.name,
-      date: cityInfo?.location.localtime,
-      temperature: cityInfo?.current.temp_c,
-      speed: cityInfo?.current.wind_kph,
-    },
-  ];
-
   return (
     <>
       <Header />

@@ -1,14 +1,21 @@
-import { users } from '../index.js';
+import { users } from "../index.js";
 
 export const registration = async (req, res) => {
-  const { email, password } = req.body.values;
+  const { login, password } = req.body.values;
 
-  const currentUserFromDB = users.find((user) => user.email === email);
+  const currentUserFromDB = users.find((user) => user.login === login);
 
   if (currentUserFromDB) {
-    res.send(JSON.stringify({ message: 'Извините, пользователь с такими данными зарегистрирован', success: false }));
+    res.send(
+      JSON.stringify({
+        message: "Извините, пользователь с такими данными зарегистрирован",
+        success: false,
+      })
+    );
   } else {
-    users.push({ email, password });
-    res.send(JSON.stringify({ message: 'Регистрация прошла успешно', success: true }));
+    users.push({ login, password });
+    res.send(
+      JSON.stringify({ message: "Регистрация прошла успешно", success: true })
+    );
   }
 };

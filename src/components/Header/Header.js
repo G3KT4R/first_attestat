@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Styles from "./header.module.css";
-import { Button, Typography, Image } from "antd";
+import { Button, Typography } from "antd";
 export const Header = () => {
   return (
     <>

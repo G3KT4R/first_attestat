@@ -8,7 +8,7 @@ export const weatherApi = createApi({
   endpoints: (build) => ({
     getWeather: build.query({
       query: (cityName) =>
-        `v1/current.json?key=6513546f07374d0fb24113839240201&q=${cityName}&aqi=no`, //Для чего этот ключ?
+        `v1/current.json?key=6513546f07374d0fb24113839240201&q=${cityName}&aqi=no`,
     }),
   }),
 });

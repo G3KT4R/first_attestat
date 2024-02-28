@@ -12,7 +12,7 @@ import pkg from "pg";
 export const pool = new pkg.Pool({
   host: "http://localhost/",
   port: 9000,
-  database: "weather",
+  database: "test",
   user: "postgres",
   password: "postgres",
 });
