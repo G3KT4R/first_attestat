@@ -1,4 +1,12 @@
-import { pool } from "../";
+import pkg from "pg";
+
+const pool = new pkg.Pool({
+  host: "http://localhost/",
+  port: 9000,
+  database: "test",
+  user: "postgres",
+  password: "postgres",
+});
 
 export const writeCityWeatherData = async (dataToWrite) => {
   const { name, time, temperature, speed } = dataToWrite;
