@@ -1,131 +1,99 @@
-import { Typography, Input, Button, Form } from "antd";
-import { Header } from "../../components/Header/Header";
-import Styles from "../WeatherPage/weatherPage.module.css";
-import { useState } from "react";
+//! Поскольку не разобрался почему некорректно работают импорты при попытке запуска команды 'node index.js'
+//! пользовался следующей командой для старта сервера: 'node --experimental-specifier-resolution=node index.js'
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-};
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
+//import express from "express";
+//import bodyParser from "body-parser";
+//import cors from "cors";
+//import { registration } from "./controllers/registrationController";
+//import { login } from "./controllers/loginColntroller";
+//import { weatherController } from "./controllers/weatherController";
 
-// https://api.weatherapi.com/v1/current.json?key=e76d25837642475daed173913232212&q=Moscow&aqi=no
+//import pkg from "pg";
+const pkg = require("pg");
+const pool = new pkg.Pool({
+  host: "http://localhost/",
+  port: 9000,
+  database: "test",
+  user: "postgres",
+  password: "postgres",
+});
 
-export const WeatherPage = () => {
-  const [form] = Form.useForm();
-  const [city, setCity] = useState("initialState");
-  const [cityInfo, setCityInfo] = useState();
-  const [errorMessage, setErrorMessage] = useState("");
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
-  const onFinish = (values) => {
-    fetch(
-      ` https://api.weatherapi.com/v1/current.json?key=6513546f07374d0fb24113839240201&q=${city}&aqi=no`,
-      {
-        method: "POST",
-        body: JSON.stringify({ values }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    )
-      .then(function (response) {
-        if (response.ok) {
-          return response.json();
+const app = express();
+
+const users = [];
+
+app.use(cors());
+app.use(bodyParser.json());
+
+//app.post("/registration", registration);
+//app.post("/login", login);
+
+app.post("/registration", async (req, res) => {
+  const { login, password } = req.body.values;
+  const currentUserFromDB = users.find((user) => user.login === login);
+
+  if (currentUserFromDB) {
+    res.send(
+      JSON.stringify({
+        message: "Извините, пользователь с такими данными зарегистрирован",
+        success: false,
+      })
+    );
+  } else {
+    users.push({ login, password });
+    res.send(
+      JSON.stringify({ message: "Регистрация прошла успешно", success: true })
+    );
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { login } = req.body.values;
+
+  const currentUserFromDB = users.find((user) => user.login === login);
+
+  if (currentUserFromDB) {
+    res.send(
+      JSON.stringify({ message: "Авторизация прошла успешно", success: true })
+    );
+  } else {
+    res.send(
+      JSON.stringify({
+        message: "Извините, вы ввели некорректные данные",
+        success: false,
+      })
+    );
+  }
+});
+
+app.post("/weather", async (req, res) => {
+  //writeCityWeatherData(req.body);
+  const { name, time, temperature, speed } = req.body;
+  pool.connect(function (err, client, done) {
+    if (err) {
+      return console.error("connetion error", err);
+    }
+    client.query(
+      "INSERT INTO att2(name, date_and_time, temp_c, wind_kph) VALUES($1, $2, $3, $4)",
+      [name, time, Math.floor(temperature), Math.floor(speed)],
+      function (err, result) {
+        // call `done()` to release the client back to the pool
+        done();
+
+        if (err) {
+          return console.error("error running query", err);
         }
-        return Promise.reject(response);
-      })
-      .then(function (data) {
-        setCityInfo(data);
-        setErrorMessage("");
-      })
-      .catch(function (error) {
-        setErrorMessage("Города с таким наименованием не существует.");
-        setCityInfo();
-        console.warn("Something went wrong.", error);
-      });
-  };
-  return (
-    <>
-      <Header />
-      <Form
-        className={Styles.wrapper}
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        style={{
-          maxWidth: 500,
-          width: "100%",
-        }}
-        scrollToFirstError
-      >
-        <Typography.Title level={3}>Введите название города</Typography.Title>
-        <Form.Item
-          name="city"
-          label="City"
-          rules={[
-            {
-              required: true,
-              message: "Please input city name.",
-            },
-            {
-              validator: (_, value) => {
-                setCity(value);
-                if (value === "") {
-                  return Promise.reject();
-                } else if (/^[a-zA-Z]+$/.test(value)) {
-                  return Promise.resolve();
-                } else {
-                  return Promise.reject(
-                    "City should include latin letters only"
-                  );
-                }
-              },
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
-            Найти
-          </Button>
-        </Form.Item>
-        <div></div>
-      </Form>
-      {cityInfo && (
-        <div className={Styles.out}>
-          <div>Название города: {cityInfo.location.name}</div>
-          <div>Дата и время: {cityInfo.location.localtime}</div>
-          <div>Температура, С: {cityInfo.current.temp_c}</div>
-          <div>Скорость ветра, км/ч: {cityInfo.current.gust_kph}</div>
-        </div>
-      )}
-    </>
-  );
-};
+        console.log("-->", result);
+      }
+    );
+  });
+  res.end();
+});
+
+app.listen(9500, () => {
+  console.log("server running on port 9500");
+});

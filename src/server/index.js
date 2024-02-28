@@ -72,14 +72,15 @@ app.post("/login", async (req, res) => {
 
 app.post("/weather", async (req, res) => {
   //writeCityWeatherData(req.body);
-  const { name, time, temperature, speed } = req.body;
+  const { name, data_and_time, temp_c, wind_kph } = req.body;
+  console.log("REQBODY:", req.body);
   pool.connect(function (err, client, done) {
     if (err) {
       return console.error("connetion error", err);
     }
     client.query(
-      "INSERT INTO att2(name, time, temperature, speed) VALUES($1, $2, $3, $4)",
-      [name, time, Math.floor(temperature), Math.floor(speed)],
+      "INSERT INTO att2(name, date_and_time, temp_c, wind_kph) VALUES($1, $2, $3, $4)",
+      [name, data_and_time, Math.floor(temp_c), Math.floor(wind_kph)],
       function (err, result) {
         // call `done()` to release the client back to the pool
         done();
