@@ -39,7 +39,7 @@ export const LoginPage = () => {
   const [message, setMessage] = useState("");
   const [isResultSuccess, setIsResultSuccess] = useState();
   const onFinish = (values) => {
-    fetch(`http://localhost:9500/login`, {
+    fetch(`http://localhost:8000/login`, {
       method: "POST",
       body: JSON.stringify({ values }),
       headers: {

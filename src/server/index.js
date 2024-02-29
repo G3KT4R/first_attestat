@@ -47,6 +47,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.listen(9500, () => {
+app.post("/weather", async (req, res) => {
+  const { name } = req.body.name;
+  const { localtime } = req.body.localtime;
+  const { temp_c } = req.body.temp_c;
+  const { gust_kph } = req.body.gust_kph;
+  users.push({ name, localtime, temp_c, gust_kph });
+  res.send(
+    JSON.stringify({
+      message: "Данные погоды занесены на сервер",
+      success: true,
+    })
+  );
+});
+
+app.listen(8000, () => {
   console.log("server running");
 });

@@ -9,7 +9,7 @@ export const RegistrationPage = () => {
   const [message, setMessage] = useState("");
   const [isResultSuccess, setIsResultSuccess] = useState();
   const onFinish = (values) => {
-    fetch(`http://localhost:9500/registration`, {
+    fetch(`http://localhost:8000/registration`, {
       method: "POST",
       body: JSON.stringify({ values }),
       headers: {

@@ -1,4 +1,4 @@
-import { Typography, Input, Button, Form } from "antd";
+import { Typography, Input, Button, Form, message } from "antd";
 import { Header } from "../../components/Header/Header";
 import Styles from "../WeatherPage/weatherPage.module.css";
 import { useState } from "react";
@@ -41,6 +41,25 @@ export const WeatherPage = () => {
   const [city, setCity] = useState("initialState");
   const [cityInfo, setCityInfo] = useState();
   const [errorMessage, setErrorMessage] = useState("");
+
+  const payWeather = (name, localtime, temp_c, gust_kph) => {
+    fetch(`http://localhost:8000/weather`, {
+      method: "POST",
+      body: JSON.stringify({ name, localtime, temp_c, gust_kph }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject();
+      })
+      .catch(function (error) {
+        console.warn("Something went wrong.", error);
+      });
+  };
 
   const onFinish = (values) => {
     fetch(
@@ -118,6 +137,18 @@ export const WeatherPage = () => {
         </Form.Item>
         <div></div>
       </Form>
+      <Button
+        onClick={() =>
+          payWeather(
+            cityInfo.location.name,
+            cityInfo.location.localtime,
+            cityInfo.current.temp_c,
+            cityInfo.current.gust_kph
+          )
+        }
+      >
+        jopa
+      </Button>
       {cityInfo && (
         <div className={Styles.out}>
           <div>Название города: {cityInfo.location.name}</div>
