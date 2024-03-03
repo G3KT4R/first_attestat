@@ -12,7 +12,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - 9000:5432
+      - 8002:5432
     networks:
       - postgres
 
@@ -25,7 +25,7 @@ services:
     volumes:
       - ./pgadmin:/var/lib/pgadmin
     ports:
-      - 9001:80
+      - 8001:80
     restart: unless-stopped
     networks:
       - postgres

@@ -147,7 +147,7 @@ export const WeatherPage = () => {
           )
         }
       >
-        jopa
+        Отправка данных в базу
       </Button>
       {cityInfo && (
         <div className={Styles.out}>
