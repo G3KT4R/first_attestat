@@ -52,19 +52,15 @@ app.post("/login", async (req, res) => {
 
 const { Pool } = require("pg");
 const pool = new Pool({
-  host: "http://localhost/",
+  host: "localhost",
   port: 8002,
   database: "postgres",
   user: "postgres",
   password: "postgres",
 });
 
-const weatherController = async (req, res) => {
-  writeCityWeatherData(req.body);
-  res.end();
-};
-
 const writeCityWeatherData = async (dataToWrite) => {
+  console.log(dataToWrite);
   const { name, localtime, temp_c, gust_kph } = dataToWrite;
   pool.connect(function (err, client, done) {
     if (err) {
@@ -84,6 +80,11 @@ const writeCityWeatherData = async (dataToWrite) => {
       }
     );
   });
+};
+
+const weatherController = async (req, res) => {
+  writeCityWeatherData(req.body);
+  res.end();
 };
 
 app.post("/weather", weatherController);
